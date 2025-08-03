@@ -1,4 +1,6 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
+
+type ObjectId = Types.ObjectId;
 
 export type UserType = {
   _id: ObjectId;

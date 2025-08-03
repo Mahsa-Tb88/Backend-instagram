@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { UserType } from "../types/types.js";
 
+const objectId = mongoose.Schema.ObjectId;
+
 const userSchema = new mongoose.Schema<UserType>(
   {
     username: {
@@ -52,20 +54,33 @@ const userSchema = new mongoose.Schema<UserType>(
       default: "",
     },
     followers: {
-      type: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "User",
-        },
-      ],
+      type: [objectId],
+      ref: "User",
+      default: [],
     },
     following: {
-      type: [
-        {
-          type: mongoose.Types.ObjectId,
-          ref: "User",
+      type: [objectId],
+      ref: "User",
+      default: [],
+    },
+    password: {
+      type: String,
+      required: [true, "password is required"],
+      set(v: string) {
+        if (v && v.length >= 6) {
+          return bcrypt.hashSync(v, 10);
+        }
+      },
+      validate: {
+        validator(v: string) {
+          if (v.length < 6) {
+            return false;
+          }
+          return true;
         },
-      ],
+        message: "Password must be at least 6 charcters long",
+      },
+      get(v: string) {},
     },
     bio: {
       type: String,

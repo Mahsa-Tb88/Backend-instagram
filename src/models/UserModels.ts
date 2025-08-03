@@ -94,5 +94,13 @@ const userSchema = new mongoose.Schema<UserType>(
   { versionKey: false }
 );
 
+userSchema.set("toJSON", {
+  transform(doc, ret, options) {
+    delete ret.password;
+    delete ret.activationCode;
+    return ret; 
+  },
+});
+
 const User = mongoose.model("User", userSchema);
 export default User;

@@ -7,6 +7,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import responseMiddleware from "./middlewares/responseMiddlewares.js";
 import authRoutes from "./routes/authRoutes.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -16,6 +17,9 @@ app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 app.use(responseMiddleware);
 app.use("api/v1/auth", authRoutes);
+
+//should be end of all error handlers
+app.use(errorHandler);
 
 try {
   await mongoose.connect(MONGO_URI);

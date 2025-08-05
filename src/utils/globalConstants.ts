@@ -3,6 +3,9 @@ import path from "path";
 globalThis.MONGO_URI = process.env.MONGO_URI;
 globalThis.SECRET_KEY = process.env.SECRET_KEY;
 globalThis.PORT = +(process.env.PORT ?? 3000);
+globalThis.EMAIL_HOST = process.env.EMAIL_HOST;
+globalThis.EMAIL_USERNAME = process.env.EMAIL_USERNAME;
+globalThis.EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
 globalThis.DEFAULT_LIMIT = 5;
 globalThis.UPLOADS_FOLDER = "/uploads";

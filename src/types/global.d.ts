@@ -2,6 +2,9 @@ declare global {
   var MONGO_URI: string;
   var SECRET_KEY: string;
   var PORT: number;
+  var EMAIL_HOST: string;
+  var EMAIL_PASSWORD: string;
+  var EMAIL_USERNAME: string;
 
   var DEFAULT_LIMIT: number;
   var UPLOADS_FOLDER: string;
@@ -17,6 +20,9 @@ declare global {
       MONGO_URI: string;
       SECRET_KEY: string;
       PORT: string;
+      EMAIL_HOST: string;
+      EMAIL_PASSWORD: string;
+      EMAIL_USERNAME: string;
     }
   }
 

@@ -22,6 +22,23 @@ export default class AuthController {
 
     res.success("user created successfully! ", user, 201);
   }
+
+  static async activate(req: ActivateReques, res: Response) {
+    const { username, activationCode } = req.body;
+
+    if (username && activationCode) {
+      const user = await User.findOne({ username, activationCode });
+
+      if (!user) {
+        return res.fail("Invalid Username or activation code");
+      }
+      user.activationCode = 0;
+      user.save();
+      res.success("User activated Successfully!");
+    } else {
+      res.fail("Invalid Request");
+    }
+  }
 }
 
 type RegisterRequest = Request<
@@ -29,3 +46,5 @@ type RegisterRequest = Request<
   any,
   { username: string; password: string; email: string; fullname?: string }
 >;
+
+type ActivateReques = Request<any, any, { username: string; activationCode: number }>;

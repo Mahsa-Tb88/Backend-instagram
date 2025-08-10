@@ -5,6 +5,7 @@ declare global {
   var EMAIL_HOST: string;
   var EMAIL_PASSWORD: string;
   var EMAIL_USERNAME: string;
+  var COMMON_FILED: string;
 
   var DEFAULT_LIMIT: number;
   var UPLOADS_FOLDER: string;

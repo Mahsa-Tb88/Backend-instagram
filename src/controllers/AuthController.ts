@@ -49,7 +49,7 @@ export default class AuthController {
     if (!username || !password) {
       return res.fail("Please enter username and password!");
     }
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }).select(COMMON_FILED + " activationCode password");
     if (!user) {
       return res.fail("Username or password is not valid!");
     }

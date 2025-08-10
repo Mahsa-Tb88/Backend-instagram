@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import responseMiddleware from "./middlewares/responseMiddlewares.js";
 import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import insertTestData from "./insertTestData.js";
 
 const app = express();
 
@@ -28,6 +29,8 @@ try {
   console.log(error.message);
   process.exit();
 }
+
+await insertTestData();
 
 app.listen(PORT, () => {
   console.log("server is running on http://localhost" + PORT);

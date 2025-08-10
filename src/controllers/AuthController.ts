@@ -84,7 +84,10 @@ export default class AuthController {
     ]);
     res.success("user logined successfully!", { user, suggested });
   }
-  static async logou(req: LoginRequest, res: Response) {}
+  static async logou(req: LoginRequest, res: Response) {
+    res.clearCookie("token");
+    res.success("Successfully Loged out ");
+  }
 }
 
 type RegisterRequest = Request<

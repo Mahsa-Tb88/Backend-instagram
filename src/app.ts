@@ -16,9 +16,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 app.use(responseMiddleware);
-app.use("api/v1/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
-//should be end of all error handlers
+//should be end of all middlewares
 app.use(errorHandler);
 
 try {

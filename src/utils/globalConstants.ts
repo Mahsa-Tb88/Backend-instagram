@@ -15,3 +15,4 @@ globalThis.SUCCESS_MSG = "Operation done successfully";
 globalThis.UNAUTH_ERR_MSG = "You must login first";
 globalThis.FORBIDDEN_ERR_MSG = "You don't have permission to do this";
 globalThis.SERVER_ERR_MSG = "Server Error";
+globalThis.COMMON_FILED = "username fullname profilePicture";

@@ -13,4 +13,5 @@ export type UserType = {
   following: ObjectId[];
   bio: string;
   activationCode?: number;
+  postCounts?: number;
 };

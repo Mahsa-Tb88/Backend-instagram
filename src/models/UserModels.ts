@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { UserType } from "../types/types.js";
+import { dot } from "node:test/reporters";
 
 const objectId = mongoose.Schema.ObjectId;
 
@@ -98,7 +99,8 @@ userSchema.set("toJSON", {
   transform(doc, ret, options) {
     delete ret.password;
     delete ret.activationCode;
-    return ret; 
+    ret.postCounts = doc.postCounts;
+    return ret;
   },
 });
 

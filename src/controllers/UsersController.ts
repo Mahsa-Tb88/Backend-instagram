@@ -80,7 +80,28 @@ export default class UsersController {
     const followings = await User.find({ _id: { $in: slice } }, COMMON_FILED);
     return res.success(SUCCESS_MSG, { followings, count });
   }
+  static async updateProfile(req: UpdateProfileRequest, res: Response) {
+    const id = req.params.id;
+    const { email, bio, fullname, password, profilePicture } = req.body;
+
+    if (req.userId !== id) {
+      return res.fail(FORBIDDEN_ERR_MSG, 403);
+    }
+
+    await User.updateOne(
+      { _id: id },
+      { email, bio, fullname, password, profilePicture },
+      { runValidators: true }
+    );
+
+    return res.success(SUCCESS_MSG);
+  }
 }
 
 type GetUsersRequest = Request<any, any, any, { page?: string; limit?: string; q?: string }>;
 type GetUserFFReqquest = Request<{ username: string }, any, any, { page: string; limit: string }>;
+type UpdateProfileRequest = Request<
+  { id: string },
+  any,
+  { email?: string; bio?: string; fullname?: string; password?: string; profilePicture?: string }
+>;

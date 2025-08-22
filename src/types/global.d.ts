@@ -1,3 +1,5 @@
+import { UserType } from "./types.ts";
+
 declare global {
   var MONGO_URI: string;
   var SECRET_KEY: string;
@@ -33,6 +35,11 @@ declare global {
     interface Response {
       success(message?: string, body?: any, code?: number);
       fail(message?: string, code?: number, body?: any);
+    }
+    interface Request {
+      userId?: string;
+      user?: UserType;
+      username?: string;
     }
   }
 }

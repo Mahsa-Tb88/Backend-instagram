@@ -9,6 +9,7 @@ import responseMiddleware from "./middlewares/responseMiddlewares.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import {checkToken} from "./middlewares/authMiddelware.js";
 import insertTestData from "./insertTestData.js";
 
 const app = express();
@@ -21,7 +22,7 @@ app.use(responseMiddleware);
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
-
+app.use(checkToken);
 //should be end of all middlewares
 app.use(errorHandler);
 

@@ -15,3 +15,22 @@ export type UserType = {
   activationCode?: number;
   postCounts?: number;
 };
+
+export type CommentType = {
+  _id: ObjectId;
+  text: string;
+  user: ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type PostType = {
+  _id: ObjectId;
+  caption: string;
+  image: string;
+  user: ObjectId;
+  likes: ObjectId[];
+  comments: CommentType[];
+  createdAt: Date;
+  updatedAt: Date;
+};

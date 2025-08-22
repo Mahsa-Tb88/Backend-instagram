@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { CommentType, PostType } from "../types/types.js";
 
 const ObjectId = mongoose.Schema.ObjectId;
 
-const commentSchema = new mongoose.Schema(
+const commentSchema = new mongoose.Schema<CommentType>(
   {
     text: {
       type: String,
@@ -26,7 +27,7 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const postSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema<PostType>(
   {
     caption: {
       type: String,

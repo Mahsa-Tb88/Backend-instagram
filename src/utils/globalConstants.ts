@@ -1,6 +1,7 @@
 import path from "path";
 
 globalThis.MONGO_URI = process.env.MONGO_URI;
+globalThis.API_SENDGRIND = process.env.API_SENDGRIND;
 globalThis.SECRET_KEY = process.env.SECRET_KEY;
 globalThis.PORT = +(process.env.PORT ?? 3000);
 globalThis.EMAIL_HOST = process.env.EMAIL_HOST;

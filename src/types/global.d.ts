@@ -6,6 +6,7 @@ declare global {
   var EMAIL_PASSWORD: string;
   var EMAIL_USERNAME: string;
   var COMMON_FILED: string;
+  var API_SENDGRIND: string;
 
   var DEFAULT_LIMIT: number;
   var UPLOADS_FOLDER: string;
@@ -19,6 +20,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       MONGO_URI: string;
+      API_SENDGRIND: string;
       SECRET_KEY: string;
       PORT: string;
       EMAIL_HOST: string;

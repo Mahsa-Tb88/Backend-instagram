@@ -14,6 +14,7 @@ export type UserType = {
   bio: string;
   activationCode?: number;
   postCounts?: number;
+  save: () => Promise<void>;
 };
 
 export type CommentType = {

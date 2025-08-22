@@ -8,4 +8,8 @@ router.get("/:username", isLoggedIn, UsersController.getProfile);
 router.get("/", isLoggedIn, UsersController.getUsers);
 router.get("/username/followers", isLoggedIn, UsersController.getFollowers);
 router.get("/username/following", isLoggedIn, UsersController.getFollowings);
+router.put("/:id/profile", isLoggedIn, UsersController.updateProfile);
+router.put("/:id/follow", isLoggedIn, UsersController.followUser);
+router.put("/:id/unfollow", isLoggedIn, UsersController.unfollowUser);
+
 export default router;

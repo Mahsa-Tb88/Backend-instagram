@@ -96,6 +96,33 @@ export default class UsersController {
 
     return res.success(SUCCESS_MSG);
   }
+
+  static async followUser(req: Request<{ id: string }>, res: Response) {
+    const targetId = req.params.id;
+    const userId = req.userId;
+    const user = req.user!;
+
+    if (targetId == userId) {
+      return res.fail("You can not follow yourself");
+    }
+    const target = await User.findById(targetId);
+    if (!target) {
+      return res.fail("User not found!", 404);
+    }
+
+    if (!user?.following.includes(targetId as any)) {
+      user?.following.push(targetId as any);
+    }
+    if (!target?.followers.includes(userId as any)) {
+      target?.followers.push(userId as any);
+    }
+
+    await user.save();
+    await target.save();
+
+    return res.success(SUCCESS_MSG);
+  }
+  static async unfollowUser(req: UpdateProfileRequest, res: Response) {}
 }
 
 type GetUsersRequest = Request<any, any, any, { page?: string; limit?: string; q?: string }>;

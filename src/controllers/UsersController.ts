@@ -122,7 +122,27 @@ export default class UsersController {
 
     return res.success(SUCCESS_MSG);
   }
-  static async unfollowUser(req: UpdateProfileRequest, res: Response) {}
+  static async unfollowUser(req: UpdateProfileRequest, res: Response) {
+    const targetId = req.params.id;
+    const userId = req.userId;
+    const user = req.user!;
+
+    if (targetId == userId) {
+      return res.fail("You can not unfollow yourself");
+    }
+    const target = await User.findById(targetId);
+    if (!target) {
+      return res.fail("User not found!", 404);
+    }
+
+    user.following = user.following.filter((u) => u.toString() !== targetId);
+    target.followers = target.followers.filter((u) => u.toString() !== userId);
+
+    await target.save();
+    await user.save();
+
+    res.success(SUCCESS_MSG);
+  }
 }
 
 type GetUsersRequest = Request<any, any, any, { page?: string; limit?: string; q?: string }>;

@@ -13,7 +13,9 @@ export async function checkToken(req: Request, res: Response, next: NextFunction
         req.userId = user._id.toString();
         req.username = user.username;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("error", error);
+    }
   }
   next();
 }

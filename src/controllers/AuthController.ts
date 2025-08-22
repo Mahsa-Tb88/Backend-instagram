@@ -45,7 +45,9 @@ export default class AuthController {
   }
 
   static async login(req: LoginRequest, res: Response) {
+    console.log("login....");
     const { username, password, remember } = req.body;
+
     if (!username || !password) {
       return res.fail("Please enter username and password!");
     }

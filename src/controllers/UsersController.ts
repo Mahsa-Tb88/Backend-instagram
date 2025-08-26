@@ -45,22 +45,22 @@ export default class UsersController {
     }
 
     const count = user.followers.length;
-    const slice = user.followers.slice((page - 1) * limit, page - 1);
-    const followers = await User.find({ _id: { $in: slice } }, COMMON_FILED);
+    // const slice = user.followers.slice((page - 1) * limit, page * limit);
+    // const followers = await User.find({ _id: { $in: slice } }, COMMON_FILED);
 
-    // const followers = (
-    //   await User.findOne({ username }, "followers")
-    //     .populate({
-    //       path: "followers",
-    //       select: COMMON_FILED,
-    //       options: {
-    //         limit,
-    //         skip: (page - 1) * limit,
-    //         sort: { _id: 1 },
-    //       },
-    //     })
-    //     .lean()
-    // )?.followers;
+    const followers = (
+      await User.findOne({ username }, "followers")
+        .populate({
+          path: "followers",
+          select: COMMON_FILED,
+          options: {
+            limit,
+            skip: (page - 1) * limit,
+            sort: { _id: 1 },
+          },
+        })
+        .lean()
+    )?.followers;
 
     return res.success(SUCCESS_MSG, { followers, count });
   }
@@ -76,7 +76,7 @@ export default class UsersController {
     }
 
     const count = user.following.length;
-    const slice = user.following.slice((page - 1) * limit, page - 1);
+    const slice = user.following.slice((page - 1) * limit, page * limit);
     const followings = await User.find({ _id: { $in: slice } }, COMMON_FILED);
     return res.success(SUCCESS_MSG, { followings, count });
   }
@@ -101,7 +101,6 @@ export default class UsersController {
     const targetId = req.params.id;
     const userId = req.userId;
     const user = req.user!;
-
     if (targetId == userId) {
       return res.fail("You can not follow yourself");
     }

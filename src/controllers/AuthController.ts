@@ -45,20 +45,24 @@ export default class AuthController {
   }
 
   static async login(req: LoginRequest, res: Response) {
-    console.log("login....");
     const { username, password, remember } = req.body;
 
     if (!username || !password) {
       return res.fail("Please enter username and password!");
     }
     const user = await User.findOne({ username }).select(COMMON_FILED + " activationCode password");
+
+    console.log("user is ", user);
     if (!user) {
       return res.fail("Username or password is not valid!");
     }
+    console.log("user.password", user.password);
 
-    const match = bcrypt.compare(password, user.password!);
+    console.log("password", password);
+
+    const match = await bcrypt.compare(password, user.password!);
     if (!match) {
-      return res.fail("Username or password is not valid!");
+      return res.fail("Invalid username or password");
     }
 
     if (user.activationCode) {
@@ -76,17 +80,20 @@ export default class AuthController {
       settings.maxAge = 7 * 86400 * 1000;
     }
     res.cookie("token", token, settings);
-
     const suggested = await User.aggregate([
-      { $match: { _id: { $ne: user._id }, fallowers: { $nin: [user._id] } } },
+      {
+        $match: { _id: { $ne: user._id }, followers: { $nin: [user._id] } },
+      },
       {
         $project: { username: 1, fullname: 1, profilePicture: 1 },
       },
-      { $sample: { size: 8 } },
+      {
+        $sample: { size: 8 },
+      },
     ]);
     res.success("user logined successfully!", { user, suggested });
   }
-  static async logou(req: LoginRequest, res: Response) {
+  static async logout(req: LoginRequest, res: Response) {
     res.clearCookie("token");
     res.success("Successfully Loged out ");
   }

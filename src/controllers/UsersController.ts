@@ -45,24 +45,24 @@ export default class UsersController {
     }
 
     const count = user.followers.length;
-    // const slice = user.followers.slice((page - 1) * limit, page * limit);
-    // const followers = await User.find({ _id: { $in: slice } }, COMMON_FILED);
+    const slice = user.followers.slice((page - 1) * limit, page * limit);
+    const users = await User.find({ _id: { $in: slice } }, COMMON_FILED);
 
-    const followers = (
-      await User.findOne({ username }, "followers")
-        .populate({
-          path: "followers",
-          select: COMMON_FILED,
-          options: {
-            limit,
-            skip: (page - 1) * limit,
-            sort: { _id: 1 },
-          },
-        })
-        .lean()
-    )?.followers;
+    // const users = (
+    //   await User.findOne({ username }, "followers")
+    //     .populate({
+    //       path: "followers",
+    //       select: COMMON_FILED,
+    //       options: {
+    //         limit,
+    //         skip: (page - 1) * limit,
+    //         sort: { _id: 1 },
+    //       },
+    //     })
+    //     .lean()
+    // )?.followers;
 
-    return res.success(SUCCESS_MSG, { followers, count });
+    return res.success(SUCCESS_MSG, { users, count });
   }
 
   static async getFollowings(req: GetUserFFReqquest, res: Response) {

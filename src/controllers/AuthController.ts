@@ -7,7 +7,6 @@ import bcrypt from "bcryptjs";
 
 export default class AuthController {
   static async register(req: RegisterRequest, res: Response) {
-    console.log("yees");
     const { username, password, email, fullname } = req.body;
     const activationCode = Math.floor(Math.random() * 900000 + 100000);
     const user = await User.create({
@@ -44,15 +43,14 @@ export default class AuthController {
     }
   }
 
-  static async login(req: LoginRequest, res: Response) {
+  static async login(req: LoginRequest, res: Response) { 
     const { username, password, remember } = req.body;
 
     if (!username || !password) {
       return res.fail("Please enter username and password!");
     }
     const user = await User.findOne({ username }).select(COMMON_FILED + " activationCode password");
-
-    console.log("user is ", user);
+    console.log("user is", user);
     if (!user) {
       return res.fail("Username or password is not valid!");
     }

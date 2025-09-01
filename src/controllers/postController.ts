@@ -56,5 +56,25 @@ export default class PostController {
 
     findComment.deleteOne();
     await post.save();
+    res.success(SUCCESS_MSG, 201);
+  }
+
+  static async getFeedPost(req: GetFeedRequest, res: Response) {
+    const page = +(req.query.page ?? 1);
+    const limit = +(req.query.limit ?? 1);
+
+    const followings = req.user?.following;
+    const posts = await Post.find({ user: { $in: followings } })
+      .populate("user", COMMON_FILED)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .lean();
+
+    const count = await Post.countDocuments({ user: { $in: followings } });
+
+    res.success(SUCCESS_MSG, { posts, count });
   }
 }
+
+type GetFeedRequest = Request<any, any, any, { page?: string; limit?: string }>;

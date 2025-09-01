@@ -36,4 +36,25 @@ export default class PostController {
     await post.save();
     res.success(SUCCESS_MSG, 201);
   }
+  static async deleteCommentPost(
+    req: Request<{ id: string }, any, { postId: string }>,
+    res: Response
+  ) {
+    const { postId } = req.body;
+    const post = await Post.findById(postId, "comments user");
+    if (!post) {
+      return res.fail("Post not found", 404);
+    }
+    const findComment = post.comments.id(req.params.id)!;
+    if (!findComment) {
+      return res.fail("Comment not found", 404);
+    }
+
+    if (req.userId !== findComment.user.toString() || req.userId !== post.user.toString()) {
+      return res.fail(FORBIDDEN_ERR_MSG, 402);
+    }
+
+    findComment.deleteOne();
+    await post.save();
+  }
 }

@@ -12,4 +12,28 @@ export default class PostController {
     }
     res.success(SUCCESS_MSG, post);
   }
+
+  static async editCommentPost(
+    req: Request<{ id: string }, any, { postId: string; text: string }>,
+    res: Response
+  ) {
+    const { postId, text } = req.body;
+    const post = await Post.findById(postId, "comments");
+    if (!post) {
+      return res.fail("Post not found", 404);
+    }
+    const findComment = post.comments.id(req.params.id)!;
+    console.log("fonddd", findComment, req.userId);
+    if (!findComment) {
+      return res.fail("Comment not found", 404);
+    }
+
+    if (req.userId !== findComment.user.toString()) {
+      return res.fail(FORBIDDEN_ERR_MSG, 402);
+    }
+
+    findComment.text = text;
+    await post.save();
+    res.success(SUCCESS_MSG, 201);
+  }
 }

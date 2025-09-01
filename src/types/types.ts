@@ -31,7 +31,8 @@ export type PostType = {
   image: string;
   user: ObjectId;
   likes: ObjectId[];
-  comments: CommentType[];
+  // comments: CommentType[];
+  comments: Types.DocumentArray<CommentType>;
   createdAt: Date;
   updatedAt: Date;
 };

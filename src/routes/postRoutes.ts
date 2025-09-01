@@ -5,5 +5,6 @@ import PostController from "../controllers/postController.js";
 const router = express.Router();
 
 router.get("/:id", isLoggedIn, PostController.getPostById);
+router.put("/:id", isLoggedIn, PostController.editCommentPost);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/PostModel.js";
+import User from "../models/UserModels.js";
 
 export default class PostController {
   static async getPostById(req: Request<{ id: string }>, res: Response) {
@@ -75,6 +76,33 @@ export default class PostController {
 
     res.success(SUCCESS_MSG, { posts, count });
   }
+
+  static async getUserPosts(req: GetUserPostsRequest, res: Response) {
+    const page = +(req.query.page ?? 1);
+    const limit = +(req.query.limit ?? DEFAULT_LIMIT);
+    const username = req.params.username;
+
+    const user = await User.findOne({ username }).lean();
+    if (!user) {
+      return res.fail("User not found", 404);
+    }
+
+    const posts = await Post.find({ user: user._id })
+      .populate("user", COMMON_FILED)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .lean();
+
+    const count = await Post.countDocuments({ user: user._id });
+    res.success(SUCCESS_MSG, { posts, count });
+  }
 }
 
 type GetFeedRequest = Request<any, any, any, { page?: string; limit?: string }>;
+type GetUserPostsRequest = Request<
+  { username: string },
+  any,
+  any,
+  { page?: string; limit?: string }
+>;

@@ -15,10 +15,19 @@ const storage = multer.diskStorage({
     const ext = extname(file.originalname).toLowerCase();
     if (!allowedExtension.includes(ext)) {
       const err = new Error("Invalid file type");
+      err.type = "Wrong Filename";
       return cb(err, " ");
     }
+    // if we deleted upload folder or have not created
+    if (!fs.existsSync(UPLOADS_PATH)) {
+      fs.mkdirSync(UPLOADS_PATH);
+    }
+
+    cb(null, UPLOADS_PATH);
   },
-  filename(req, file, cb) {},
+  filename(req, file, cb) {
+    
+  },
 });
 
 const uploader = multer({ storage, limits: { fileSize: MAX_UPLOAD_SIZE } });

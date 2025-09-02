@@ -42,5 +42,8 @@ declare global {
       username?: string;
     }
   }
+  interface Error {
+    type?: string;
+  }
 }
 export {};

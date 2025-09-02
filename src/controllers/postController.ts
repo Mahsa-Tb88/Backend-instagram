@@ -114,6 +114,21 @@ export default class PostController {
     await post.save();
     res.success(SUCCESS_MSG, 201);
   }
+
+  static async unlikePost(req: Request<{ id: string }>, res: Response) {
+    const postId = req.params.id;
+    const userId = req.userId;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.fail("Post not found", 44);
+    }
+
+    post.likes = post.likes.filter((p) => p.toString() !== userId);
+
+    await post.save();
+    res.success(SUCCESS_MSG, 201);
+  }
 }
 
 type GetFeedRequest = Request<any, any, any, { page?: string; limit?: string }>;

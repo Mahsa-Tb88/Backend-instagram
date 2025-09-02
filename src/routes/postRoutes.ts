@@ -10,5 +10,6 @@ router.delete("/:id", isLoggedIn, PostController.deleteCommentPost);
 router.get("/user/feed", isLoggedIn, PostController.getFeedPost);
 router.get("/:username/posts", isLoggedIn, PostController.getUserPosts);
 router.put("/:id/like", isLoggedIn, PostController.likePost);
+router.put("/:id/unlike", isLoggedIn, PostController.unlikePost);
 
 export default router;

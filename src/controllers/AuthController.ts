@@ -50,13 +50,10 @@ export default class AuthController {
       return res.fail("Please enter username and password!");
     }
     const user = await User.findOne({ username }).select(COMMON_FILED + " activationCode password");
-    console.log("user is", user);
     if (!user) {
       return res.fail("Username or password is not valid!");
     }
-    console.log("user.password", user.password);
-
-    console.log("password", password);
+ 
 
     const match = await bcrypt.compare(password, user.password!);
     if (!match) {

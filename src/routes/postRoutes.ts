@@ -8,6 +8,7 @@ router.get("/:id", isLoggedIn, PostController.getPostById);
 router.put("/:id", isLoggedIn, PostController.editCommentPost);
 router.delete("/:id", isLoggedIn, PostController.deleteCommentPost);
 router.get("/user/feed", isLoggedIn, PostController.getFeedPost);
-router.get("/:username/posts", isLoggedIn, PostController.getUserPost);
+router.get("/:username/posts", isLoggedIn, PostController.getUserPosts);
+router.put("/:id/like", isLoggedIn, PostController.likePost);
 
 export default router;

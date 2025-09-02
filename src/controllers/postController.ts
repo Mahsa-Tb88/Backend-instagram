@@ -97,6 +97,23 @@ export default class PostController {
     const count = await Post.countDocuments({ user: user._id });
     res.success(SUCCESS_MSG, { posts, count });
   }
+
+  static async likePost(req: Request<{ id: string }>, res: Response) {
+    const postId = req.params.id;
+    const userId = req.userId;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.fail("Post not found", 44);
+    }
+
+    if (post.likes.includes(userId as any)) {
+      post.likes.push(userId as any);
+    }
+
+    await post.save();
+    res.success(SUCCESS_MSG, 201);
+  }
 }
 
 type GetFeedRequest = Request<any, any, any, { page?: string; limit?: string }>;

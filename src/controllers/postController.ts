@@ -133,8 +133,23 @@ export default class PostController {
   static async createPost(req: CreatePostRequest, res: Response) {
     const userId = req.userId;
     const { caption, image } = req.body;
-    await Post.create({ caption, image, user: userId });
+    const post = await Post.create({ caption, image, user: userId });
     res.success("New post was created successfully!", post, 201);
+  }
+
+  static async insertComment(req: InsertCommetRequest, res: Response) {
+    const postId = req.params.id;
+    const userId = req.userId;
+    const { text } = req.body;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      res.fail("Post not found", 404);
+    }
+
+    post?.comments.push({ user: userId, text });
+    await post.save();
+    res.success(SUCCESS_MSG, 201);
   }
 }
 
@@ -147,3 +162,4 @@ type GetUserPostsRequest = Request<
 >;
 
 type CreatePostRequest = Request<any, any, { caption: string; image: string }>;
+type InsertCommetRequest = Request<any, any, { id: string; text: string }>;

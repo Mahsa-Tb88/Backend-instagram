@@ -12,5 +12,6 @@ router.get("/:username/posts", isLoggedIn, PostController.getUserPosts);
 router.put("/:id/like", isLoggedIn, PostController.likePost);
 router.put("/:id/unlike", isLoggedIn, PostController.unlikePost);
 router.post("/", isLoggedIn, PostController.createPost);
+router.post("/:id/commnet", isLoggedIn, PostController.insertComment);
 
 export default router;

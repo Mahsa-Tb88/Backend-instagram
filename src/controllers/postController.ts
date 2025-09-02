@@ -129,6 +129,13 @@ export default class PostController {
     await post.save();
     res.success(SUCCESS_MSG, 201);
   }
+
+  static async createPost(req: CreatePostRequest, res: Response) {
+    const userId = req.userId;
+    const { caption, image } = req.body;
+    await Post.create({ caption, image, user: userId });
+    res.success("New post was created successfully!", post, 201);
+  }
 }
 
 type GetFeedRequest = Request<any, any, any, { page?: string; limit?: string }>;
@@ -138,3 +145,5 @@ type GetUserPostsRequest = Request<
   any,
   { page?: string; limit?: string }
 >;
+
+type CreatePostRequest = Request<any, any, { caption: string; image: string }>;

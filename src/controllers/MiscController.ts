@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import User from "../models/UserModels.js";
 
 export default class MiscController {
-  
   static async init(req: Request, res: Response) {
     if (!req.userId) {
       return res.success(SUCCESS_MSG, { user: null, suggested: [] });
@@ -21,5 +20,14 @@ export default class MiscController {
     ]);
 
     res.success(SUCCESS_MSG, { user, suggested });
+  }
+
+  static async uploadFile(req: Request, res: Response) {
+    if (!req.file) {
+      return res.fail("No file uploaded");
+    }
+
+    const { filename } = req.file;
+    res.success("File uploaded successfully!", { filename, url: UPLOADS_FOLDER + "/" + filename });
   }
 }

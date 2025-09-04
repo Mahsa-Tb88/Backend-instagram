@@ -40,6 +40,9 @@ declare global {
       userId?: string;
       user?: UserType;
       username?: string;
+      // file?: {
+      //   filename: string;
+      // };
     }
   }
   interface Error {

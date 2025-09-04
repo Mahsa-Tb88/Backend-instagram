@@ -17,11 +17,13 @@ import miscRoutes from "./routes/miscRoutes.js";
 const app = express();
 
 app.use("/uploads", express.static(UPLOADS_PATH));
+app.use(responseMiddleware);
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
-app.use(responseMiddleware);
 app.use(checkToken);
+
+app.use((req, res, next) => setTimeout(next, 1000));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);

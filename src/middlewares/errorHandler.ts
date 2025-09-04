@@ -5,6 +5,9 @@ import { MulterError } from "multer";
 export default function errorHandler(e: Error, req: Request, res: Response, next: NextFunction) {
   console.log("error....");
   if (e.type) {
+    if (e.type == "entity.parse.failed") {
+      return res.fail("Invalid JSON");
+    }
     return res.fail(e.message);
   } else if (e instanceof MulterError && e.code === "LIMIT_FILE_SIZE") {
     return res.fail(
@@ -12,7 +15,9 @@ export default function errorHandler(e: Error, req: Request, res: Response, next
     );
   } else if (e instanceof MulterError && e.code == "LIMIT_UNEXPECTED_FILE") {
     return res.fail("Only one file can be uploaded!");
-  } else if (e instanceof mongoose.Error.ValidationError) {
+  }
+  
+  else if (e instanceof mongoose.Error.ValidationError) {
     const error = Object.values(e.errors)[0];
     return res.fail(error.message);
   } else if (e instanceof MongooseError) {

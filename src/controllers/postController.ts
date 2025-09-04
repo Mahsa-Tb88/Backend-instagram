@@ -144,10 +144,9 @@ export default class PostController {
 
     const post = await Post.findById(postId);
     if (!post) {
-      res.fail("Post not found", 404);
+      return res.fail("Post not found", 404);
     }
-    ///question for you!
-    post?.comments.push({ user: userId, text });
+    post.comments.push({ user: userId, text });
     await post?.save();
     res.success(SUCCESS_MSG, 201);
   }
@@ -164,7 +163,6 @@ export default class PostController {
     if (post.user.toString() !== userId) {
       return res.fail(FORBIDDEN_ERR_MSG, 404);
     }
-    //question for you
     // await Post.findByIdAndDelete(postId);
     await post.deleteOne();
     res.success(SUCCESS_MSG, 201);

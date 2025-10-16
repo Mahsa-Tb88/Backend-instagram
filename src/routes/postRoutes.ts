@@ -12,7 +12,7 @@ router.get("/:username/posts", isLoggedIn, PostController.getUserPosts);
 router.put("/:id/like", isLoggedIn, PostController.likePost);
 router.put("/:id/unlike", isLoggedIn, PostController.unlikePost);
 router.post("/", isLoggedIn, PostController.createPost);
-router.post("/:id/commnet", isLoggedIn, PostController.insertComment);
+router.post("/:id/comment", isLoggedIn, PostController.insertComment);
 router.delete("/:id", isLoggedIn, PostController.deletePost);
 
 export default router;

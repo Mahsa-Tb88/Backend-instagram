@@ -81,7 +81,7 @@ const userSchema = new mongoose.Schema<UserType>(
         },
         message: "Password must be at least 6 charcters long",
       },
-      get(v: string) {},
+      // get(v: string) {},
     },
     bio: {
       type: String,

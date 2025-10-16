@@ -101,7 +101,7 @@ export default class PostController {
   static async likePost(req: Request<{ id: string }>, res: Response) {
     const postId = req.params.id;
     const userId = req.userId;
-
+    console.log("like");
     const post = await Post.findById(postId);
     if (!post) {
       return res.fail("Post not found", 44);
@@ -118,7 +118,7 @@ export default class PostController {
   static async unlikePost(req: Request<{ id: string }>, res: Response) {
     const postId = req.params.id;
     const userId = req.userId;
-
+    console.log("unlike post");
     const post = await Post.findById(postId);
     if (!post) {
       return res.fail("Post not found", 44);

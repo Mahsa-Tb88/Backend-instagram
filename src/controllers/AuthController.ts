@@ -53,11 +53,10 @@ export default class AuthController {
     if (!user) {
       return res.fail("Username or password is not valid!");
     }
-
-    // const match = await bcrypt.compare(password, user.password!);
-    // if (!match) {
-    //   return res.fail("Invalid username or password");
-    // }
+    const match = await bcrypt.compare(password, user.password!);
+    if (!match) {
+      return res.fail("Invalid username or password");
+    }
 
     if (user.activationCode) {
       return res.fail("User is not activated!");

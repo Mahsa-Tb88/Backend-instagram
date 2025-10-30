@@ -101,16 +101,14 @@ export default class PostController {
   static async likePost(req: Request<{ id: string }>, res: Response) {
     const postId = req.params.id;
     const userId = req.userId;
-    console.log("like");
     const post = await Post.findById(postId);
     if (!post) {
       return res.fail("Post not found", 44);
     }
 
-    if (post.likes.includes(userId as any)) {
+    if (!post.likes.includes(userId as any)) {
       post.likes.push(userId as any);
     }
-
     await post.save();
     res.success(SUCCESS_MSG, 201);
   }

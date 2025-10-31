@@ -14,6 +14,15 @@ export default class PostController {
     res.success(SUCCESS_MSG, post);
   }
 
+  static async editPost(req: Request<{ id: string }, any, { caption: string }>, res: Response) {
+    const postId = req.params.id;
+    const { caption } = req.body;
+    const post = await Post.findById(postId);
+    post!.caption = caption;
+    await post?.save();
+    res.success(SUCCESS_MSG, 201);
+  }
+
   static async editCommentPost(
     req: Request<{ id: string }, any, { postId: string; text: string }>,
     res: Response
@@ -24,7 +33,6 @@ export default class PostController {
       return res.fail("Post not found", 404);
     }
     const findComment = post.comments.id(req.params.id)!;
-    console.log("fonddd", findComment, req.userId);
     if (!findComment) {
       return res.fail("Comment not found", 404);
     }
@@ -150,6 +158,7 @@ export default class PostController {
   }
 
   static async deletePost(req: Request<{ id: string }>, res: Response) {
+    console.log("post id....", req.params.id);
     const postId = req.params.id;
     const userId = req.userId;
 

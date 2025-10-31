@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get("/:id", isLoggedIn, PostController.getPostById);
 router.put("/:id", isLoggedIn, PostController.editCommentPost);
-router.delete("/:id", isLoggedIn, PostController.deleteCommentPost);
+router.delete("/comment/:id", isLoggedIn, PostController.deleteCommentPost);
+router.post("/comment/:id", isLoggedIn, PostController.editPost);
 router.get("/user/feed", isLoggedIn, PostController.getFeedPost);
 router.get("/:username/posts", isLoggedIn, PostController.getUserPosts);
 router.put("/:id/like", isLoggedIn, PostController.likePost);

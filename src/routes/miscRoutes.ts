@@ -12,6 +12,8 @@ router.get("/init", MiscController.init);
 const allowedExtension = [".jpg", ".png", ".jpeg", ".webp"];
 const storage = multer.diskStorage({
   destination(req, file, cb) {
+    console.log("file is ", file);
+
     const ext = extname(file.originalname).toLowerCase();
     if (!allowedExtension.includes(ext)) {
       const err = new Error("Invalid file type");

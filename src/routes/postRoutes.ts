@@ -5,7 +5,7 @@ import PostController from "../controllers/postController.js";
 const router = express.Router();
 
 router.get("/:id", isLoggedIn, PostController.getPostById);
-router.put("/:id", isLoggedIn, PostController.editCommentPost);
+router.put("/:id/comment", isLoggedIn, PostController.editCommentPost);
 router.delete("/comment/:id", isLoggedIn, PostController.deleteCommentPost);
 router.post("/:id", isLoggedIn, PostController.editPost);
 router.get("/user/feed", isLoggedIn, PostController.getFeedPost);

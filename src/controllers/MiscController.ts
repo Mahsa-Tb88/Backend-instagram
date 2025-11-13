@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import User from "../models/UserModels.js";
 
 export default class MiscController {
+  
   static async init(req: Request, res: Response) {
     if (!req.userId) {
       return res.success(SUCCESS_MSG, { user: null, suggested: [] });
     }
+
     const user = (await User.findById(req.userId, COMMON_FILED))!;
     const suggested = await User.aggregate([
       {

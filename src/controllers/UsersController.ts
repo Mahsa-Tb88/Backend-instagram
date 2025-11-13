@@ -81,6 +81,8 @@ export default class UsersController {
     return res.success(SUCCESS_MSG, { followings, count });
   }
   static async updateProfile(req: UpdateProfileRequest, res: Response) {
+    console.log("req.body", req.body);
+
     const id = req.params.id;
     const { email, bio, fullname, password, profilePicture } = req.body;
 

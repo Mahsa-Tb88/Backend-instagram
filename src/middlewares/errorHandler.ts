@@ -3,7 +3,6 @@ import mongoose, { MongooseError } from "mongoose";
 import { MulterError } from "multer";
 
 export default function errorHandler(e: Error, req: Request, res: Response, next: NextFunction) {
-  console.log("error....");
   if (e.type) {
     if (e.type == "entity.parse.failed") {
       return res.fail("Invalid JSON");

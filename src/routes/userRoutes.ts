@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get("/:username", isLoggedIn, UsersController.getProfile);
 router.get("/", isLoggedIn, UsersController.getUsers);
+router.get("/search/findUser/", UsersController.getuserSearch);
 router.get("/:username/followers", isLoggedIn, UsersController.getFollowers);
 router.get("/:username/following", isLoggedIn, UsersController.getFollowings);
 router.put("/:id/profile", isLoggedIn, UsersController.updateProfile);

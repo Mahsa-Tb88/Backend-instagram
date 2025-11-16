@@ -16,6 +16,25 @@ export default class UsersController {
     res.success(SUCCESS_MSG, user);
   }
 
+  static async getuserSearch(req: GetUsersRequest, res: Response) {
+    console.log("serach====", req.query.q);
+    const page = +(req.query.page ?? 1);
+    const limit = +(req.query.limit ?? DEFAULT_LIMIT);
+    const q = req.query.q ?? "";
+
+    const filter = {
+      $or: [
+        { username: { $regex: "^" + q, $options: "i" } },
+        { fullName: { $regex: "^" + q, $options: "i" } },
+      ],
+    };
+
+    const users = await User.find(filter).select("username  profilePicture fullname");
+
+    const count = await User.countDocuments(filter);
+
+    res.success(SUCCESS_MSG, { users, count });
+  }
   static async getUsers(req: GetUsersRequest, res: Response) {
     const page = +(req.query.page ?? 1);
     const limit = +(req.query.limit ?? DEFAULT_LIMIT);
@@ -64,7 +83,6 @@ export default class UsersController {
 
     return res.success(SUCCESS_MSG, { users, count });
   }
-
   static async getFollowings(req: GetUserFFReqquest, res: Response) {
     const page = +(req.query.page ?? 1);
     const limit = +(req.query.limit ?? DEFAULT_LIMIT);

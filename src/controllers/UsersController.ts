@@ -28,9 +28,24 @@ export default class UsersController {
       ],
     };
 
-    let users = await User.find(filter).select("username  profilePicture fullname");
-    users = users.filter((user) => user.username != req.username);
+    let usersList = await User.find(filter).select(
+      "username profilePicture fullname following followers"
+    );
 
+    const users = usersList
+      .filter((user) => user.username !== req.username)
+      .map((user) => {
+        const followingIds = user.following.map(String);
+        const followersIds = user.followers.map(String);
+
+        return {
+          username: user.username,
+          fullname: user.fullname,
+          profilePicture: user.profilePicture,
+          isFollowing: followingIds.includes(req.userId!),
+          isFollower: followersIds.includes(req.userId!),
+        };
+      });
     const count = await User.countDocuments(filter);
 
     res.success(SUCCESS_MSG, { users, count });

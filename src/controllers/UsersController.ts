@@ -17,7 +17,6 @@ export default class UsersController {
   }
 
   static async getuserSearch(req: GetUsersRequest, res: Response) {
-    console.log("serach====", req.query.q);
     const page = +(req.query.page ?? 1);
     const limit = +(req.query.limit ?? DEFAULT_LIMIT);
     const q = req.query.q ?? "";
@@ -29,7 +28,8 @@ export default class UsersController {
       ],
     };
 
-    const users = await User.find(filter).select("username  profilePicture fullname");
+    let users = await User.find(filter).select("username  profilePicture fullname");
+    users = users.filter((user) => user.username != req.username);
 
     const count = await User.countDocuments(filter);
 

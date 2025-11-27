@@ -31,7 +31,6 @@ export default class UsersController {
     let usersList = await User.find(filter).select(
       "username profilePicture fullname following followers"
     );
-
     const users = usersList
       .filter((user) => user.username !== req.username)
       .map((user) => {
@@ -39,6 +38,7 @@ export default class UsersController {
         const followersIds = user.followers.map(String);
 
         return {
+          _id: user._id,
           username: user.username,
           fullname: user.fullname,
           profilePicture: user.profilePicture,
@@ -110,8 +110,8 @@ export default class UsersController {
 
     const count = user.following.length;
     const slice = user.following.slice((page - 1) * limit, page * limit);
-    const followings = await User.find({ _id: { $in: slice } }, COMMON_FILED);
-    return res.success(SUCCESS_MSG, { followings, count });
+    const users = await User.find({ _id: { $in: slice } }, COMMON_FILED);
+    return res.success(SUCCESS_MSG, { users, count });
   }
   static async updateProfile(req: UpdateProfileRequest, res: Response) {
     console.log("req.body", req.body);

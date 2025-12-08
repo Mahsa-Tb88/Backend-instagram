@@ -50,13 +50,13 @@ export default class PostController {
     req: Request<{ id: string }, any, { postId: string }>,
     res: Response
   ) {
-    console.log("post comment ", req.body);
     const { postId } = req.body;
     const post = await Post.findById(postId, "comments user");
     if (!post) {
       return res.fail("Post not found", 404);
     }
-    const findComment = post.comments.id(req.params.id)!;
+
+    const findComment = post.comments.find((c) => c._id.toString() == req.params.id);
 
     if (!findComment) {
       return res.fail("Comment not found", 404);
@@ -127,7 +127,6 @@ export default class PostController {
   static async unlikePost(req: Request<{ id: string }>, res: Response) {
     const postId = req.params.id;
     const userId = req.userId;
-    console.log("unlike post");
     const post = await Post.findById(postId);
     if (!post) {
       return res.fail("Post not found", 44);
@@ -157,11 +156,11 @@ export default class PostController {
     }
     post.comments.push({ user: userId, text });
     await post?.save();
-    res.success(SUCCESS_MSG, 201);
+    const newComment = post.comments[post.comments.length - 1];
+    res.success(SUCCESS_MSG, newComment);
   }
 
   static async deletePost(req: Request<{ id: string }>, res: Response) {
-    console.log("post id....", req.params.id);
     const postId = req.params.id;
     const userId = req.userId;
 

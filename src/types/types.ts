@@ -43,3 +43,11 @@ export type ConversationType = {
   to: ObjectId;
   lastMessage: ObjectId | null;
 };
+
+export type MessageType = {
+  _id: ObjectId;
+  sender: ObjectId;
+  conversation: ObjectId;
+  text: string;
+  seen: boolean;
+};

@@ -36,3 +36,10 @@ export type PostType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type ConversationType = {
+  _id: ObjectId;
+  from: ObjectId;
+  to: ObjectId;
+  lastMessage: ObjectId | null;
+};

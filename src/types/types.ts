@@ -1,3 +1,4 @@
+import { Socket } from "dgram";
 import { Types } from "mongoose";
 
 type ObjectId = Types.ObjectId;
@@ -51,3 +52,6 @@ export type MessageType = {
   text: string;
   seen: boolean;
 };
+
+export type OnlineUsers = Record<string, Socket>;
+export type TypingUsers = Record<string, string>;

@@ -55,4 +55,10 @@ declare module "jsonwebtoken" {
     id: string;
   }
 }
+
+declare module "socket.io" {
+  interface Socket {
+    userId: string;
+  }
+}
 export {};

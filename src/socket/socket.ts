@@ -4,8 +4,11 @@ import { Server as SocketServer } from "socket.io";
 import { parse } from "cookie";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/UserModels.js";
+import { OnlineUsers, TypingUsers } from "../types/types.js";
 
 export function initSocketServer(s: HTTPServer) {
+  const onlineUsers: OnlineUsers = {};
+  const typingUsers: TypingUsers = {};
   const io = new SocketServer(s, {
     cors: {
       origin: true,
@@ -16,11 +19,7 @@ export function initSocketServer(s: HTTPServer) {
   io.on("connection", async (socket) => {
     // authorization
     const cookieString = socket.handshake.headers?.cookie ?? "";
-    console.log("cookieString is", cookieString);
-
     const cookie = cookieString ? parse(cookieString) : {};
-    console.log("cookie is ", cookie);
-
     if (!cookie.token) {
       console.log("No token");
       return socket.disconnect(true);
@@ -33,15 +32,16 @@ export function initSocketServer(s: HTTPServer) {
         console.log("No user");
         return socket.disconnect(true);
       }
+
+      socket.userId = payload.id;
+      onlineUsers[payload.id] = socket;
     } catch (e: any) {
       console.log(e.message);
       return socket.disconnect(true);
     }
-
-    console.log(socket.id);
-    // socket.emit("test", "hey test");
-    // socket.on("ttt", (data) => {
-    //   console.log(data);
-    // });
+    socket.on("disconnet", () => {
+      delete onlineUsers[socket.userId];
+      delete typingUsers[socket.userId];
+    });
   });
 }

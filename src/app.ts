@@ -13,6 +13,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import { checkToken } from "./middlewares/authMiddelware.js";
 import insertTestData from "./insertTestData.js";
 import miscRoutes from "./routes/miscRoutes.js";
+import { initSocketServer } from "./socket/socket.js";
 
 const app = express();
 
@@ -43,6 +44,14 @@ try {
 
 // await insertTestData();
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, (err) => {
+  if (err) {
+    console.log("error is", err);
+    process.exit();
+  }
   console.log("server is running on http://localhost" + PORT);
 });
+
+if (server) {
+  initSocketServer(server);
+}

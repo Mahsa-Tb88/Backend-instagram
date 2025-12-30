@@ -385,4 +385,35 @@ for (let i = 1; i < 2000; i++) {
   posts[post].comments.push(comment);
 }
 
-export { users, posts };
+const conversations: any[] = [];
+for (let i = 0; i < users.length * 8; i++) {
+  const from = Math.floor(Math.random() * users.length);
+  const to = Math.floor(Math.random() * users.length);
+  if (from !== to) {
+    const fid = users[from]._id;
+    const tid = users[to]._id;
+    const duplicate = conversations.find(
+      (c) => (c.from === fid && c.to === tid) || (c.from === tid && c.to === fid)
+    );
+    if (!duplicate) {
+      const _id = "67c98e4e7cbe52d689bf3" + (i + 256).toString(16);
+      conversations.push({
+        _id,
+        from: users[from]._id,
+        to: users[to]._id,
+      });
+    }
+  }
+}
+
+const messages: any[] = [];
+const MPC = 100;
+for (let i = 0; i < conversations.length * MPC; i++) {
+  const conversation = conversations[Math.floor(Math.random() * conversations.length)];
+  const sender = Math.random() > 0.5 ? conversation.from : conversation.to;
+  const text = (" Test Message " + i).repeat(Math.floor(Math.random() * 20) + 1).trim();
+  const seen = i < 0.9 * MPC * conversations.length;
+  messages.push({ sender, conversation: conversation._id, text, seen });
+}
+
+export { users, posts, conversations, messages };

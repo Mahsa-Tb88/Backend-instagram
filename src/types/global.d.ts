@@ -49,4 +49,10 @@ declare global {
     type?: string;
   }
 }
+
+declare module "jsonwebtoken" {
+  interface JwtPayload {
+    id: string;
+  }
+}
 export {};
